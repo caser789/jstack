@@ -11,12 +11,12 @@ type UDPEndpoint struct {}
 func main() {
     log.Println("server started")
 
-	s := New()
+	// s := New()
 
-	ep, err := s.NewEndpoint()
-	if err != nil {
-		log.Fatal(err)
-	}
+	// ep, err := s.NewEndpoint()
+	// if err != nil {
+	//     log.Fatal(err)
+	// }
 
 	// defer ep.Close()
 
