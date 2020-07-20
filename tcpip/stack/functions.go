@@ -1,8 +1,10 @@
 package stack
 
+import "github.com/caser789/jstack/tcpip"
+
 func New(network []string, transport []string) IStack {
     s := &Stack{
-		transportProtocols: make(map[TransportProtocolNumber]ITransportProtocol),
+		transportProtocols: make(map[tcpip.TransportProtocolNumber]ITransportProtocol),
     }
 
     for _, name := range transport {

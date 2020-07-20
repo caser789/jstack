@@ -1,6 +1,7 @@
 package stack
 
 import "testing"
+import "github.com/caser789/jstack/tcpip"
 // import "log"
 
 const name = "dummy"
@@ -11,11 +12,11 @@ type protocol struct{
 }
 type endpoint struct{}
 
-func (*protocol) Number() TransportProtocolNumber {
+func (*protocol) Number() tcpip.TransportProtocolNumber {
 	return number
 }
 
-func (p *protocol) NewEndpoint(netProto NetworkProtocolNumber) (IEndpoint, error) {
+func (p *protocol) NewEndpoint(netProto tcpip.NetworkProtocolNumber) (IEndpoint, error) {
 	return p.endpoint, nil
 }
 
