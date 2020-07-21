@@ -3,7 +3,9 @@ package header
 import "github.com/caser789/jstack/tcpip"
 
 func PseudoHeaderChecksum(protocol tcpip.TransportProtocolNumber, srcAddr tcpip.Address, dstAddr tcpip.Address) uint16 {
-	return 0
+	xsum := Checksum([]byte(srcAddr), 0)
+	xsum = Checksum([]byte(dstAddr), xsum)
+	return Checksum([]byte{0, uint8(protocol)}, xsum)
 }
 
 func Checksum(buf []byte, initial uint16) uint16 {

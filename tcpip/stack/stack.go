@@ -51,6 +51,7 @@ func (s *Stack) SetRouteTable(table []tcpip.Route) {
 	s.routeTable = table
 }
 
+// attach so early, the endpoint is even not created
 func (s *Stack) CreateNIC(id tcpip.NICID, linkEP tcpip.LinkEndpointID) error {
     return s.createNIC(id, linkEP, true)
 }
