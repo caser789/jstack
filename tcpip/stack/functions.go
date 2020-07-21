@@ -18,3 +18,9 @@ func New(network []string, transport []string) IStack {
     return s
 }
 
+
+// global
+var linkEndpoints = make(map[tcpip.LinkEndpointID]ILinkEndpoint)
+func FindLinkEndpoint(id tcpip.LinkEndpointID) ILinkEndpoint {
+	return linkEndpoints[id]
+}

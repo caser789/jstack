@@ -3,7 +3,13 @@ package stack
 import "github.com/caser789/jstack/tcpip"
 import "github.com/caser789/jstack/tcpip/buffer"
 
+type INetworkDispatcher interface { }
+
 type IEndpoint interface {}
+
+type ILinkEndpoint interface {
+	Attach(dispatcher INetworkDispatcher)
+}
 
 type IStack interface {
     NewEndpoint(transport tcpip.TransportProtocolNumber, network tcpip.NetworkProtocolNumber) (IEndpoint, error)

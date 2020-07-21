@@ -12,3 +12,5 @@ type FullAddress struct {
 }
 
 type NICID int32
+
+type LinkEndpointID uint64
