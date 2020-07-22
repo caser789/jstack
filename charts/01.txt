@@ -1,0 +1,24 @@
+actor User
+participant UDPEndpoint
+participant Route
+participant transportDemuxer
+participant NIC1
+participant NetworkEndpoint
+participant NIC
+participant LinkEndpoint
+
+User -> UDPEndpoint: Write(data, toAddress)
+UDPEndpoint -> UDPEndpoint: UDP header
+UDPEndpoint -> Route: WritePacket(header, data, 17)
+Route -> NetworkEndpoint: WritePacket(header, data, 17)
+NetworkEndpoint -> NetworkEndpoint: IP header
+NetworkEndpoint -> LinkEndpoint: WritePacket(header, data, 0x0800)
+
+LinkEndpoint -> LinkEndpoint: dispatch\ncopy data from buffer
+LinkEndpoint -> NIC: DeliverNetworkPacket(NetworkProtocol, data)
+NIC -> NIC: get NetworkEndpoint
+NIC -> NetworkEndpoint: HandlePacket(data)
+NetworkEndpoint -> NIC: DeliverTransportPacket(TransportProtocol, data)
+NIC -> transportDemuxer: deliverPacket(\n  TransportProtocol, \n  localAddr, \n  localPort, \n  dstAddr, \n  dstPort, \n  data)
+transportDemuxer -> transportDemuxer: get UDPEndpoint
+transportDemuxer -> UDPEndpoint: HandlePacket

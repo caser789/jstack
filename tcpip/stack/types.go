@@ -4,22 +4,12 @@ import "github.com/caser789/jstack/tcpip"
 import "github.com/caser789/jstack/tcpip/buffer"
 
 type INetworkDispatcher interface { }
+type ITransportDispatcher interface {}
 
 type IEndpoint interface {}
-
 type ILinkEndpoint interface {
 	Attach(dispatcher INetworkDispatcher)
 }
-
-type IStack interface {
-    NewEndpoint(transport tcpip.TransportProtocolNumber, network tcpip.NetworkProtocolNumber) (IEndpoint, error)
-}
-
-type ITransportProtocol interface {
-    NewEndpoint(netProto tcpip.NetworkProtocolNumber) (IEndpoint, error)
-    Number() tcpip.TransportProtocolNumber
-}
-
 type INetworkEndpoint interface {
 	MTU() uint32
 	MaxHeaderLength() uint16
@@ -30,10 +20,23 @@ type INetworkEndpoint interface {
 	HandlePacket(r *Route, v buffer.View)
 }
 
+
+type IStack interface {
+    NewEndpoint(transport tcpip.TransportProtocolNumber, network tcpip.NetworkProtocolNumber) (IEndpoint, error)
+}
+
+type ITransportProtocol interface {
+    NewEndpoint(netProto tcpip.NetworkProtocolNumber) (IEndpoint, error)
+    Number() tcpip.TransportProtocolNumber
+}
+type INetworkProtocol interface {
+	NewEndpoint(nicid tcpip.NICID, addr tcpip.Address, dispatcher ITransportDispatcher, sender ILinkEndpoint) (INetworkEndpoint, error)
+	Number() tcpip.NetworkProtocolNumber
+}
+
 type NetworkEndpointID struct {
 	LocalAddress tcpip.Address
 }
-
 type TransportEndpointID struct {
 	LocalPort uint16
 	LocalAddress tcpip.Address

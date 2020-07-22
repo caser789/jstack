@@ -5,7 +5,7 @@ import "github.com/caser789/jstack/tcpip"
 type Stack struct {
     // need to register the protocols before using NewEndpoint
     transportProtocols map[tcpip.TransportProtocolNumber]ITransportProtocol
-	networkProtocols   map[tcpip.NetworkProtocolNumber]NetworkProtocol
+	networkProtocols   map[tcpip.NetworkProtocolNumber]INetworkProtocol
 
     // need to register before FindRoute
 	routeTable []tcpip.Route

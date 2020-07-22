@@ -33,7 +33,7 @@ func (n *NIC) AddAddress(protocol tcpip.NetworkProtocolNumber, addr tcpip.Addres
 	return err
 }
 
-func (n *NIC) addAddressLocked(protocol tcpip.NetworkProtocolNumber, addr tcpip.Address, replace bool) (*INetworkEndpoint, error) {
+func (n *NIC) addAddressLocked(protocol tcpip.NetworkProtocolNumber, addr tcpip.Address, replace bool) (INetworkEndpoint, error) {
 	netProto, ok := n.stack.networkProtocols[protocol]
 	if !ok {
 		return nil, tcpip.ErrUnknownProtocol

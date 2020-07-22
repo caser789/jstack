@@ -1,0 +1,37 @@
+# flow of stack init
+
+actor User
+participant stack
+participant UDPProtocol
+participant NIC
+participant IPv4Protocol
+participant fdbased
+
+stack --> stack: make NetworkProtocolName2Protocol
+IPv4Protocol -> stack: RegisterNetworkProtocol
+stack -> IPv4Protocol
+
+stack --> stack: make TransportProtocolName2Protocol
+UDPProtocol -> stack: RegisterTransportProtocol
+stack -> UDPProtocol
+
+User -> stack: New
+stack --> stack: make NetProtocolNumber2NetProtocol
+stack --> stack: make TransportProtocolNumber2TransportProtocol
+stack -> User
+
+User -> fdbased: New
+stack -> stack: make LinkEndpointID2LinkEndpoint
+fdbased -> stack: RegisterLinkEndpoint
+stack -> fdbased:
+fdbased -> User: link endpoint
+
+User -> stack: CreateNIC
+stack -> NIC: create new NIC
+NIC -> stack: NIC
+stack --> stack: make NICID2NIC
+stack -> NIC: attach LinkEndpoint
+NIC -> fdbased: Attach
+fdbased -> NIC:
+NIC -> stack:
+stack -> User:
