@@ -35,3 +35,13 @@ NIC -> fdbased: Attach
 fdbased -> NIC:
 NIC -> stack:
 stack -> User:
+
+User -> stack: AddAddress\nNICID\nNetworkProtocolNumber\nAddress
+stack --> stack: get NIC by NICID
+stack --> NIC: AddAddress\nNetworkProtocol\nAddress
+NIC --> NIC: get NetworkProtocol by protocol number
+NIC -> IPv4Protocol: NewEndpoint\nNICID\nAddress\nLinkEndpoint
+IPv4Protocol -> NIC: NetworkEndpoint
+NIC --> NIC: Save to NetworkEndpointID2Endpoint
+NIC --> stack:
+stack -> User:
