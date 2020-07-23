@@ -49,6 +49,7 @@ func (s *Stack) FindRoute(id tcpip.NICID, localAddr, remoteAddr tcpip.Address, n
     return Route{}, tcpip.ErrNoRoute
 }
 
+// later transportendpoint will need to find route and send package with the route's networkendpoint
 func (s *Stack) SetRouteTable(table []tcpip.Route) {
 	s.routeTable = table
 }
