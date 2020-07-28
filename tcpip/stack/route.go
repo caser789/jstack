@@ -6,10 +6,10 @@ import "github.com/caser789/jstack/tcpip/buffer"
 
 type Route struct {
 	RemoteAddress tcpip.Address
-	LocalAddress tcpip.Address
-	NextHop tcpip.Address
-	NetProto tcpip.NetworkProtocolNumber
-	ref INetworkEndpoint
+	LocalAddress  tcpip.Address
+	NextHop       tcpip.Address
+	NetProto      tcpip.NetworkProtocolNumber
+	ref           INetworkEndpoint
 }
 
 func makeRoute(netProto tcpip.NetworkProtocolNumber, localAddr, remoteAddr tcpip.Address, ref INetworkEndpoint) Route {
@@ -20,7 +20,6 @@ func makeRoute(netProto tcpip.NetworkProtocolNumber, localAddr, remoteAddr tcpip
 		ref:           ref,
 	}
 }
-
 
 func (r *Route) Release() {}
 

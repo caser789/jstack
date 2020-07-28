@@ -8,7 +8,7 @@ type Address string
 type FullAddress struct {
 	Addr Address
 	Port uint16
-    NIC NICID
+	NIC  NICID
 }
 
 type NICID int32

@@ -1,32 +1,52 @@
 package main
 
 import "log"
-
-const IPv4ProtocolName = "ipv4"
-const UDPProtocolName = "udp"
-
-
-type UDPEndpoint struct {}
+import "net"
+import "strconv"
+import "github.com/caser789/jstack/tcpip"
+import "github.com/caser789/jstack/tcpip/network/ipv4"
+import "github.com/caser789/jstack/tcpip/stack"
+import "github.com/caser789/jstack/tcpip/transport/udp"
 
 func main() {
-    log.Println("server started")
+	log.Println("server started")
 
-	// s := New()
+	localAddr := "192.168.1.1"
 
-	// ep, err := s.NewEndpoint()
-	// if err != nil {
-	//     log.Fatal(err)
-	// }
+	parsedAddr := net.ParseIP(localAddr)
+	log.Printf("parsedAddr is %s", parsedAddr)
 
-	// defer ep.Close()
+	addr := tcpip.Address(parsedAddr.To4())
+	proto := ipv4.ProtocolNumber
+
+	localPortName := "9999"
+	localPort, _ := strconv.Atoi(localPortName)
+
+	// tunName := "tun0"
+
+	log.Printf("addr is %s", addr)
+	log.Printf("proto is %x", proto)
+	log.Printf("port is %d", localPort)
+
+	s := stack.New([]string{ipv4.ProtocolName}, []string{udp.ProtocolName})
+
+	log.Printf("stack is %t", s)
+
+	ep, err := s.NewEndpoint(udp.ProtocolNumber, proto)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer ep.Close()
 
 	// if err := ep.Bind(); err != nil {
-	// 	log.Fatal("Bind failed: ", err)
+	//     log.Fatal("Bind failed: ", err)
 	// }
 
-    // for {
-
-	// 	n, wq, err := ep.RecvFrom()
-	// 	ep.SendTo()
-    // }
+	for {
+		wq, err := ep.RecvMsg(nil)
+		log.Println(wq)
+		log.Println(err)
+		// ep.SendTo()
+	}
 }

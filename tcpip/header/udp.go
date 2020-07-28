@@ -16,12 +16,11 @@ const (
 type UDP []byte
 
 type UDPFields struct {
-	SrcPort uint16
-	DstPort uint16
-	Length uint16
+	SrcPort  uint16
+	DstPort  uint16
+	Length   uint16
 	Checksum uint16
 }
-
 
 func (b UDP) Encode(u *UDPFields) {
 	binary.BigEndian.PutUint16(b[udpSrcPort:], u.SrcPort)

@@ -3,10 +3,15 @@ package stack
 import "github.com/caser789/jstack/tcpip"
 import "github.com/caser789/jstack/tcpip/buffer"
 
-type INetworkDispatcher interface { }
-type ITransportDispatcher interface {}
+type INetworkDispatcher interface{}
+type ITransportDispatcher interface{}
 
-type IEndpoint interface {}
+type IEndpoint interface {
+	Close()
+	Bind(address tcpip.FullAddress) error
+	RecvMsg(*tcpip.FullAddress) (buffer.View, error)
+}
+
 type ILinkEndpoint interface {
 	Attach(dispatcher INetworkDispatcher)
 }
@@ -20,14 +25,13 @@ type INetworkEndpoint interface {
 	HandlePacket(r *Route, v buffer.View)
 }
 
-
 type IStack interface {
-    NewEndpoint(transport tcpip.TransportProtocolNumber, network tcpip.NetworkProtocolNumber) (IEndpoint, error)
+	NewEndpoint(transport tcpip.TransportProtocolNumber, network tcpip.NetworkProtocolNumber) (IEndpoint, error)
 }
 
 type ITransportProtocol interface {
-    NewEndpoint(netProto tcpip.NetworkProtocolNumber) (IEndpoint, error)
-    Number() tcpip.TransportProtocolNumber
+	NewEndpoint(netProto tcpip.NetworkProtocolNumber) (IEndpoint, error)
+	Number() tcpip.TransportProtocolNumber
 }
 type INetworkProtocol interface {
 	NewEndpoint(nicid tcpip.NICID, addr tcpip.Address, dispatcher ITransportDispatcher, sender ILinkEndpoint) (INetworkEndpoint, error)
@@ -38,9 +42,9 @@ type NetworkEndpointID struct {
 	LocalAddress tcpip.Address
 }
 type TransportEndpointID struct {
-	LocalPort uint16
+	LocalPort    uint16
 	LocalAddress tcpip.Address
 
-	RemotePort uint16
+	RemotePort    uint16
 	RemoteAddress tcpip.Address
 }

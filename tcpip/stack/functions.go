@@ -3,10 +3,10 @@ package stack
 import "github.com/caser789/jstack/tcpip"
 
 func New(network []string, transport []string) IStack {
-    s := &Stack{
+	s := &Stack{
 		transportProtocols: make(map[tcpip.TransportProtocolNumber]ITransportProtocol),
 		networkProtocols:   make(map[tcpip.NetworkProtocolNumber]INetworkProtocol),
-    }
+	}
 
 	for _, name := range network {
 		netProto, ok := networkProtocols[name]
@@ -17,21 +17,20 @@ func New(network []string, transport []string) IStack {
 		s.networkProtocols[netProto.Number()] = netProto
 	}
 
+	for _, name := range transport {
+		proto, ok := transportProtocols[name]
+		if !ok {
+			continue
+		}
 
-    for _, name := range transport {
-        proto, ok := transportProtocols[name]
-        if !ok {
-            continue
-        }
-
-        s.transportProtocols[proto.Number()] = proto
-    }
-    return s
+		s.transportProtocols[proto.Number()] = proto
+	}
+	return s
 }
-
 
 // global
 var linkEndpoints = make(map[tcpip.LinkEndpointID]ILinkEndpoint)
+
 func FindLinkEndpoint(id tcpip.LinkEndpointID) ILinkEndpoint {
 	return linkEndpoints[id]
 }

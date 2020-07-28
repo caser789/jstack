@@ -3,15 +3,15 @@ package stack
 import "github.com/caser789/jstack/tcpip"
 
 type NIC struct {
-	stack  *Stack
-	id     tcpip.NICID
-	linkEP ILinkEndpoint
-	endpoints   map[NetworkEndpointID]INetworkEndpoint
+	stack     *Stack
+	id        tcpip.NICID
+	linkEP    ILinkEndpoint
+	endpoints map[NetworkEndpointID]INetworkEndpoint
 }
 
 func (n *NIC) findEndpoint(address tcpip.Address) INetworkEndpoint {
 	ref := n.endpoints[NetworkEndpointID{address}]
-    return ref
+	return ref
 }
 
 func newNIC(stack *Stack, id tcpip.NICID, ep ILinkEndpoint) *NIC {
