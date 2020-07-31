@@ -10,6 +10,8 @@ type IEndpoint interface {
 	Close()
 	Bind(address tcpip.FullAddress) error
 	RecvMsg(*tcpip.FullAddress) (buffer.View, error)
+
+	Write(buffer.View, *FullAddress) (uintptr, error)
 }
 
 type ILinkEndpoint interface {
