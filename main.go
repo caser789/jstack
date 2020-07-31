@@ -4,6 +4,7 @@ import "log"
 import "net"
 import "strconv"
 import "github.com/caser789/jstack/tcpip"
+import "github.com/caser789/jstack/tcpip/buffer"
 import "github.com/caser789/jstack/tcpip/network/ipv4"
 import "github.com/caser789/jstack/tcpip/stack"
 import "github.com/caser789/jstack/tcpip/transport/udp"
@@ -37,16 +38,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	defer ep.Close()
-
-	// if err := ep.Bind(); err != nil {
-	//     log.Fatal("Bind failed: ", err)
-	// }
-
-	for {
-		wq, err := ep.RecvMsg(nil)
-		log.Println(wq)
-		log.Println(err)
-		// ep.SendTo()
-	}
+    ep.Write(buffer.View([]byte{'a', 'b'}), tcpip.FullAddress{
+        Addr: addr,
+        Port: 9999,
+        NIC: 1,
+    })
 }

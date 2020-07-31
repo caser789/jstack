@@ -86,3 +86,26 @@ func (e *endpoint) Read(addr *tcpip.FullAddress) (buffer.View, error) {
 
 	return p.view, nil
 }
+
+func (e *endpoint) HandlePacket(r *stack.Route, id stack.TransportEndpointID, v buffer.View) {
+	// Get the header then trim it from the view.
+	hdr := header.UDP(v)
+	if int(hdr.Length()) > len(v) {
+		// Malformed packet.
+		return
+	}
+
+	v.TrimFront(header.UDPMinimumSize)
+
+	// Push new packet into receive list and increment the buffer size.
+	e.rcvList.PushBack(&udpPacket{
+		view: v,
+		senderAddress: tcpip.FullAddress{
+			NIC:  r.NICID(),
+			Addr: id.RemoteAddress,
+			Port: hdr.SourcePort(),
+		},
+	})
+	e.rcvBufSize += len(v)
+}
+

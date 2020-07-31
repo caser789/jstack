@@ -34,3 +34,7 @@ func (r *Route) PseudoHeaderChecksum(protocol tcpip.TransportProtocolNumber) uin
 func (r *Route) WritePacket(hdr *buffer.Prependable, payload buffer.View, protocol tcpip.TransportProtocolNumber) error {
 	return r.ref.WritePacket(r, hdr, payload, protocol)
 }
+
+func (r *Route) NICID() tcpip.NICID {
+	return r.ref.NICID()
+}
